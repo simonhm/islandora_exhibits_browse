@@ -1,0 +1,348 @@
+<?php
+
+/**
+ * Implements hook_init().
+ */
+function islandora_exhibit_browse_init() {
+  // Include islandora_solr common.inc.
+  module_load_include('inc', 'islandora_solr', 'includes/utilities');
+  // Include islandora solr query_processor.inc
+  module_load_include('inc', 'islandora_solr', 'includes/query_processor');
+}
+
+function islandora_exhibits_browse_help($path, $arg) {
+  if ($path == 'admin/help#islandora_exhibits_browse') {
+    return t('Islandora Exhibit Browsers module - developed by <a href=http://www.mnpals.org>PALS</a>');
+  }
+}
+
+/* 
+  Declare exhibits blocks.
+*/
+function islandora_exhibits_browse_block_info() {
+  $blocks = array();
+
+  // Get available fields from variable.
+  $fields = variable_get('islandora_exhibits_browse_fields_data', array());
+
+
+  foreach ($fields as $key => $value) {
+    $path = $value['path'];
+
+    $path_bl = "exhibit_$path";
+    $name_bl = "Exhibit Browse - $path";
+
+    $blocks[$path_bl] = array(
+      'info' => t($name_bl),
+      'cache' => DRUPAL_NO_CACHE,
+    );
+  }
+
+  return $blocks;
+}
+
+function islandora_exhibits_browse_block_view($block_name = '') {
+
+  // Get available fields from variable.
+  $fields = variable_get('islandora_exhibits_browse_fields_data', array());
+
+  foreach ($fields as $key => $value) {
+    $path = $value['path'];
+
+    $path_bl = "exhibit_$path";
+
+    if ($block_name == $path_bl) {
+
+      $content = islandora_exhibits_browse_callback($path);
+
+      $block = array(
+        'subject' => t('Islandora Exhibits Browse'),
+        'content' => $content,
+      );
+    }
+  }
+  return $block;
+}
+
+function islandora_exhibits_browse_menu() {
+  $items = array();
+
+  $items['admin/islandora/tools/exhibits_browse'] = array(
+    'title' => 'Exhibits Browse',
+    'description' => 'Islandora Exhibits Browse pages settings',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('islandora_exhibits_browse_admin_settings'),
+    'access arguments' => array('administer site configuration'),
+    'file' => 'islandora_exhibits_browse.admin.inc',
+    'type' => MENU_NORMAL_ITEM,
+  );
+  $items['admin/islandora/tools/exhibits_browse/edit'] = array(
+    'title' => 'Exhibits Browse - Configuration',
+    'description' => 'Islandora Exhibits Browse page configuration',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('islandora_exhibits_browse_admin_settings_configure'),
+    'access arguments' => array('administer site configuration'),
+    'file' => 'islandora_exhibits_browse.admin.inc',
+    'type' => MENU_CALLBACK,
+  );
+  $items['admin/islandora/tools/exhibits_browse/remove'] = array(
+    'title' => 'Are you sure you want to remove this?',
+    'description' => 'Islandora Exhibits Browse page configuration',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('islandora_exhibits_browse_admin_settings_remove'),
+    'access arguments' => array('administer site configuration'),
+    'file' => 'islandora_exhibits_browse.admin.inc',
+    'type' => MENU_CALLBACK,
+  );
+  $items['exhibits'] = array(
+    'page callback' => 'islandora_exhibits_browse_callback',
+    'page arguments' => array(1),
+    'access callback' => 'islandora_exhibits_browse_access_callback',
+    'access arguments' => array(1),
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function islandora_exhibits_browse_theme() {
+  // Set path.
+  $base = array(
+    'path' => drupal_get_path('module', 'islandora_exhibits_browse') . '/theme',
+    'file' => 'islandora_exhibits_browse.theme.inc',
+  );
+
+  return array(
+    'islandora_exhibits_browse_results_timeline' => $base + array(
+      'template' => 'islandora-exhibits-browse-results-timeline',
+      'variables' => array(
+        'path' => NULL,
+        'results' => array(),
+        'list_field' => array(),
+      ),
+    ),
+    'islandora_exhibits_browse_wrapper_timeline' => $base + array(
+      'template' => 'islandora-exhibits-browse-wrapper-timeline',
+      'variables' => array(
+        'results' => NULL,
+        'pager' => NULL,
+        'path' => NULL,
+        'pager_data' => array(),
+      ),
+    ),
+    'islandora_exhibits_browse_results_slideshow' => $base + array(
+      'template' => 'islandora-exhibits-browse-results-slideshow',
+      'variables' => array(
+        'path' => NULL,
+        'results' => array(),
+        'list_field' => array(),
+      ),
+    ),
+    'islandora_exhibits_browse_wrapper_slideshow' => $base + array(
+      'template' => 'islandora-exhibits-browse-wrapper-slideshow',
+      'variables' => array(
+        'results' => NULL,
+        'pager' => NULL,
+        'path' => NULL,
+        'pager_data' => array(),
+      ),
+    ),
+    'islandora_exhibits_browse_admin_table' => array(
+      'file' => 'islandora_exhibits_browse.admin.inc',
+      'render element' => 'form',
+    ),
+  );
+}
+
+/**
+ * Page callback function.
+ *
+ * @param string $path
+ *   Machine readable name passed in the url to decide what solr field to facet
+ *   on.
+ */
+function islandora_exhibits_browse_callback($path) {
+  // Get available fields from variable.
+  $fields = variable_get('islandora_exhibits_browse_fields_data', array());
+
+  // Include base CSS file.
+  $base_css = drupal_get_path('module', 'islandora_exhibits_browse') . '/css/islandora_exhibits_browse.page.css';
+  drupal_add_css($base_css);
+
+  // Include timeline JS & CSS files.
+  $timeline_css = drupal_get_path('module', 'islandora_exhibits_browse') . '/css/timeline.css';
+  drupal_add_css($timeline_css);
+  $timeline_js = drupal_get_path('module', 'islandora_exhibits_browse') . '/js/timeline.js';
+  drupal_add_js($timeline_js);
+
+  $slideshow_css = drupal_get_path('module', 'islandora_exhibits_browse') . '/css/slideshow.css';
+  drupal_add_css($slideshow_css); 
+  $slideshow_js = drupal_get_path('module', 'islandora_exhibits_browse') . '/js/slick/slick.min.js';
+  drupal_add_js($slideshow_js);
+  
+
+  // Callback validation.
+  foreach ($fields as $key => $value) {
+    if ($path == $value['path']) {
+      // Set variables.
+      $pid = $value['pid'];
+      $type = $value['type'];
+      drupal_set_title($value['configuration']['title']);
+   
+      // Timeline.
+      if ($type == 'Timeline') {
+        $list_fields = $value['configuration']['timeline'];
+      }
+
+      // Slideshow.
+      if ($type == 'Slideshow') {
+        $list_fields = $value['configuration']['slideshow'];
+      }      
+  
+      // Map browser.
+      if ($type == 'Map') {
+        $list_fields = $value['configuration']['map'];
+      }
+
+
+    }
+  }
+
+  // Use Solr to get list of objects.
+  $parsed_url = parse_url(variable_get('islandora_solr_url', 'http://localhost:8080/solr'));
+  $solr = new Apache_Solr_Service($parsed_url['host'], $parsed_url['port'], $parsed_url['path']);
+
+  // Collect results.
+  $result_fields = islandora_exhibits_browse_build_results($solr, $pid);
+
+
+  // Timeline.
+  if ($type == 'Timeline') {
+
+    // Set up pager.
+    $pager_data = islandora_exhibits_browse_pager_timeline($result_fields);
+    $offset = $pager_data['offset'];
+    $limit = $pager_data['limit'];
+
+    // Slice array.
+    $results = array_slice($result_fields, $offset, $limit);
+    $results = theme('islandora_exhibits_browse_results_timeline', array(
+      'results' => $results,
+      'path' => $path,
+      'list_fields' => $list_fields,
+    ));
+  
+    // Render pager.
+    $pager = theme('pager', array(
+      'element' => 0,
+      'quantity' => 5,
+    ));
+
+    // Main content.
+    return theme('islandora_exhibits_browse_wrapper_timeline', array(
+      'results' => $results,
+      'pager' => $pager,
+      'path' => $path,
+      'pager_data' => $pager_data,
+    ));
+  }
+
+  // Slideshow.
+  if ($type == 'Slideshow') {
+
+   // $results = $result_fields;
+    $results = array_slice($result_fields, $offset, $limit);
+
+    // Main content.
+    return theme('islandora_exhibits_browse_results_slideshow', array(
+      'results' => $results,
+      'path' => $path,
+      'list_fields' => $list_fields,
+    ));
+    
+  }
+
+}
+
+/**
+ * Access callback function.
+ *
+ * @param string $path
+ *   Machine readable name passed in the url to decide what solr field to facet
+ *   on.
+ *
+ * @return bool
+ *   A boolean based on user access and valid path.
+ */
+function islandora_exhibits_browse_access_callback($path = NULL) {
+  // Get available fields from variable.
+  $fields = variable_get('islandora_exhibits_browse_fields_data', array());
+
+  // Callback validation.
+  foreach ($fields as $key => $value) {
+    // Check for allowed paths.
+    if ($path == $value['path'] && user_access(ISLANDORA_VIEW_OBJECTS)) {
+      return TRUE;
+    }
+  }
+
+  return FALSE;
+}
+
+function islandora_exhibits_browse_build_results($solr, $pid) {
+  $solr_build = new IslandoraSolrQueryProcessor();
+  $query = 'RELS_EXT_isMemberOfCollection_uri_ms:"info:fedora/' . $pid . '"';
+//  $query = 'RELS_EXT_isMemberOfCollection_uri_ms:"info:fedora/TESTrepository:msuphotos"';
+
+  // The fields added here are required.
+  $fl_params = "PID, dc.title, dc.description, dc.date, mods_originInfo_dateCreated_ms";
+//  $solr_build->solrParams['fl'] = array($fl_params);
+  $solr_build->solrParams['fl'] = '';
+
+  // This section resets the limits on the query and re-executes.
+  $solr_build->solrStart = 0;
+  $solr_build->solrLimit = 10000;
+
+
+  $solr_build->solrQuery=$query;
+
+  try {
+    $solr_build->executeQuery();
+    $fields = $solr_build->islandoraSolrResult['response'];
+  }
+  catch (Exception $e) {
+    $fields = array();
+    drupal_set_message(check_plain(t('Error searching Solr index')) . ' ' . $e->getMessage(), 'error', FALSE);
+  }
+//  dpm($fields);
+//  dpm($solr_build);
+  return $fields['objects'];
+}
+
+function islandora_exhibits_browse_pager_timeline($result_fields = array()) {
+  // Set variables.
+  $limit = 100;
+  $offset = 0;
+  $total = NULL;
+
+  // Get URL parameters.
+  $params = $_GET;
+  unset($params['q']);
+
+  // Get page limit.
+  if (!empty($limit)) {
+    $total = count($result_fields);
+    $offset = isset($params['page']) ? $params['page'] * $limit : 0;
+    pager_default_initialize($total, $limit);
+  }
+
+  return array(
+    'limit' => $limit,
+    'offset' => $offset,
+    'total' => $total,
+  );
+}
+

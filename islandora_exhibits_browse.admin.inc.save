@@ -1,0 +1,255 @@
+<?php
+
+/**
+ * Admin form building function.
+ */
+function islandora_exhibits_browse_admin_settings($form, &$form_state) {
+  // Include admin CSS file.
+  $admin_css = drupal_get_path('module', 'islandora_exhibits_browse') . '/css/islandora_exhibits_browse.admin.css';
+  drupal_add_css($admin_css);
+
+  $form['exhibits_pages'] = array(
+    '#type' => 'fieldset',
+    '#collapsible' => FALSE,
+    '#collapsed' => FALSE,
+  );
+
+  // Fields.
+  $form['exhibits_pages']['islandora_exhibits_browse_fields_data'] = array(
+    '#type' => 'item',
+    '#title' => t('Exhibits pages'),
+    '#description' => t('Configure exhibits pages. Save settings for additional empty fields.'),
+    '#tree' => TRUE,
+    '#theme' => 'islandora_exhibits_browse_admin_table',
+  );
+
+  // Get fields from variable.
+  $fields_data = variable_get('islandora_exhibits_browse_fields_data', array());
+
+  // Add 3 empty fields.
+  for ($i = 1; $i <= 3; $i++) {
+    $fields_data[] = array('');
+  }
+
+  $fields = array();
+  foreach ($fields_data as $key => $value) {
+    $field = array(
+      'pid' => array(
+        '#type' => 'textfield',
+        '#default_value' => isset($value['pid']) ? $value['pid'] : '',
+      ),
+      'type' => array(
+        '#type' => 'select',
+        '#options' => array(
+          '' => t(''),
+          'Timeline' => t('Timeline'),
+          'Slideshow' => t('Slideshow'),
+          'Map_Browser' => t('Map Browser'),
+        ),
+        '#default_value' => isset($value['type']) ? $value['type'] : '',
+      ),
+      'path' => array(
+        '#type' => 'textfield',
+        '#default_value' => isset($value['path']) ? $value['path'] : '',
+      ),
+    );
+    $fields[] = $field;
+  }
+
+  // Add fields.
+  $form['exhibits_pages']['islandora_exhibits_browse_fields_data']['fields'] = $fields;
+
+  $form['buttons']['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Save'),
+    '#weight' => 50,
+  );
+
+  return $form;
+}
+
+/**
+ * Theme callback.
+ */
+function theme_islandora_exhibits_browse_admin_table(&$vars) {
+
+  $fields_data = variable_get('islandora_exhibits_browse_fields_data');
+
+  // Set variable.
+  $rows = array();
+  $form = $vars['form'];
+
+  // Render islandora_solr_primary_display_table.
+  foreach ($form['fields'] as $key => $elements) {
+
+    $found = false;
+
+    $row = array();
+    // Check if $key is really the array we need. we shouldn't select the
+    // #parent array for example.
+    if (is_array($elements) && element_child($key)) {
+
+      $row[] = array('data' => drupal_render($form['fields'][$key]['pid']));      
+      $row[] = array('data' => drupal_render($form['fields'][$key]['type']));
+      $row[] = array('data' => drupal_render($form['fields'][$key]['path']));
+      if ($elements['pid']['#value']) {
+        foreach ($fields_data as $k => $value) {
+          if ((@$value['pid'] == $elements['pid']['#value']) & (@$value['id']))  {
+            $row[] = "<a href=exhibits_browse/edit?id=" . @$fields_data[$k]['id'] . ">Configure</a> | <a href=exhibits_browse/remove?key=" . $key . "&id=" . @$fields_data[$k]['id'] . ">Remove</a>";
+            $found = true;
+            break;
+          }
+        }
+        if (!$found) {
+          $row[] = "<a href=exhibits_browse/edit?id=new&key=" . $key . ">Configure</a> | <a href=exhibits_browse/remove?key=" . $key . "&id=new>Remove</a>";
+        }
+      } else {
+        $row[] = '';
+      }
+
+      $rows[] = $row;
+    }
+  }
+
+  // Individual table headers.
+  $header = array();
+  $header[] = array('data' => t('Collection PID'));
+  $header[] = array('data' => t('Type'));
+  $header[] = array('data' => t('Path'));
+  $header[] = array('data' => t('Operations'));
+
+  // Render table.
+  $output = theme('table', array(
+    'header' => $header,
+    'rows' => $rows,
+    'attributes' => array(
+      'id' => 'islandora-exhibits-browsers-admin-table',
+    ),
+  ));
+
+  return $output;
+}
+
+/**
+ * Implements hook_validate().
+ */
+function islandora_exhibits_browse_admin_settings_validate($form, &$form_state) {
+
+  // On save.
+  if ($form_state['clicked_button']['#id'] == 'edit-submit') {
+
+    // Check for valid paths.
+    foreach ($form_state['values']['islandora_exhibits_browse_fields_data']['fields'] as $key => $value) {
+      if (!preg_match("/^[a-zA-Z0-9-_]*$/", $value['path'])) {
+        form_set_error('islandora_exhibits_browse_fields_data][fields][' . $key . '][path', t('The path can only contain the following characters: a-z, A-Z, 0-9, - and _'));
+      }
+    }
+
+  }
+}
+
+function islandora_exhibits_browse_admin_settings_submit($form, &$form_state) {
+  // Set variables.
+  // Clean up array.
+  $fields_data = $form_state['values']['islandora_exhibits_browse_fields_data']['fields'];
+  $fields_data_configure = variable_get('islandora_exhibits_browse_fields_data');
+  foreach ($fields_data as $key => $value) {    
+    $fields_data[$key]['configuration'] = @$fields_data_configure[$key]['configuration'];
+  }
+  variable_set('islandora_exhibits_browse_fields_data', $fields_data);
+
+  drupal_set_message(t('The configuration options have been saved.'));
+}
+
+function islandora_exhibits_browse_admin_settings_configure($form, &$form_state) {
+
+  $fields_data = variable_get('islandora_exhibits_browse_fields_data');   
+  $key = @$_GET['key'];
+  $id = $_GET['id'];
+  $data = @$fields_data[$key];
+  $title = '';
+
+  if ($id != 'new') {
+    foreach ($fields_data as $key => $value) {
+      if (@$value['id'] == $id) {
+        $title = $value['title'];
+        break;
+      }    
+    }
+  }
+  
+  $form['title_page'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Title'),
+    '#description' => t('Title of page'),
+    '#default_value' => $title,
+  );
+    
+  // Timeline form
+
+
+  // Submit button.
+  $form['buttons']['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Save'),
+    '#weight' => 50,
+  );
+
+  return $form;  
+}
+
+function islandora_exhibits_browse_admin_settings_configure_submit($form, &$form_state) {
+
+  $fields_data = variable_get('islandora_exhibits_browse_fields_data');
+  $k = @$_GET['key'];
+  $id = $_GET['id'];
+
+  if ($id == 'new') {
+    $id = rand(1,99999);
+    $fields_data[$k]['id'] = $id;
+  } else {
+    foreach ($fields_data as $key => $value) {
+      if (@$value['id'] == $id) {
+          $k = $key;
+          break;
+      }
+    }
+  }
+
+  $fields_data[$k]['title'] = $form_state['values']['title_page'];
+  
+  variable_set('islandora_exhibits_browse_fields_data', $fields_data);
+  drupal_set_message(t('The configuration options have been saved.'));
+
+  $form_state['redirect'] = 'admin/islandora/tools/exhibits_browse';
+}
+
+function islandora_exhibits_browse_admin_settings_remove($form, &$form_state) {
+  $form['buttons']['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Remove'),
+    '#weight' => 50,
+  );
+
+  return $form;
+}
+
+function islandora_exhibits_browse_admin_settings_remove_submit($form, &$form_state) {
+  $fields_data = variable_get('islandora_exhibits_browse_fields_data');
+  $key = $_GET['key'];
+  $id = $_GET['id'];
+  
+  if (!@$fields_data[$key]) {
+    foreach ($fields_data as $k => $value) {
+      if (@$value['id'] == $id) {
+          $key = $k;
+          break;
+      }
+    }
+  }
+  unset($fields_data[$key]);
+  variable_set('islandora_exhibits_browse_fields_data', $fields_data);
+  drupal_set_message(t('The page has been removed.'));
+ 
+  $form_state['redirect'] = 'admin/islandora/tools/exhibits_browse';
+}

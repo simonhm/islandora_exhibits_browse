@@ -1,0 +1,7 @@
+name = Islandora Exhibits Browse 
+description = Creates pages displaying exhibits collection: timeline, slideshow, map browse
+dependencies[] = islandora_solr
+configure = admin/islandora/tools/exhibits_browses
+package = Islandora Exhibits Browses
+version = 7.x-1.7
+core = 7.x
