@@ -3,6 +3,7 @@
 ## Introduction
 
 The Islandora Exhibits Browse module creates exhibits browse pages and blocks from metadata indexed in Solr.
+This module will "showcases" Islandora collections as timeline, slideshow, or map browse.
 
 ## Requirements
 
