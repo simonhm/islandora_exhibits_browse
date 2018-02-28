@@ -21,24 +21,34 @@ Install as usual, see [this](https://drupal.org/documentation/install/modules-th
 ## Configuration
 
 For a short video on setting up an exhibit, see: https://islandora.mnpals.net/pals/islandora/object/PALSrepository%3A426. 
+For detailed documentation, see: https://islandora.mnpals.net/pals/islandora/object/PALSrepository%3A427
+
 
 To configure, go to Home --> Administration --> Islandora --> Islandora Utility Modules --> Exhibits Browse. 
 
 Login as repository manager/administrator.  First navigate to the collection that will become an exhibit.  Click on Manage.  Click on Datastreams.
 Next copy the "Collection PID".  For example: DEMOrepository:exhibit_demo (above "MIME TYPE" column).  
+
 Next navitage to Exhibits Browse (Home --> Administration --> Islandora --> Islandora Utility Modules --> Exhibits Browse).
+
 In "Exhibits pages", in first column, copy the "Collection PID".  
+
 In second column, choose the Type of exhibit (timeline or slideshow).
+
 In the third column, type in a custom path name.  For example, athletics_slideshow.  Click Save.
+
 Under Operations, click on Configure. 
+
 Under Pagename, name the exhibit.  
+
 Other metadata elements can be used for the headline and description (Dublin Core or MODs).
+
 Choose the datastream to be used for displaying images in the slideshow or timeline.  For now the objects in the collection 
 must be the same format (all JPG or all TIFF, for example).  
+
 Click Save.  
+
 Next, click on "View Page" to see what the exhibit would look like.
-
-
 
 ## Notes
 
