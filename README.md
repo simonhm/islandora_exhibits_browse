@@ -21,6 +21,7 @@ Install as usual, see [this](https://drupal.org/documentation/install/modules-th
 ## Configuration
 
 For a short video on setting up an exhibit, see: https://islandora.mnpals.net/pals/islandora/object/PALSrepository%3A426. 
+
 For detailed documentation, see: https://islandora.mnpals.net/pals/islandora/object/PALSrepository%3A427
 
 
