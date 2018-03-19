@@ -44,9 +44,6 @@ Under Pagename, name the exhibit.
 
 Other metadata elements can be used for the headline and description (Dublin Core or MODs).
 
-Choose the datastream to be used for displaying images in the slideshow or timeline.  For now the objects in the collection 
-must be the same format (all JPG or all TIFF, for example).  
-
 Click Save.  
 
 Next, click on "View Page" to see what the exhibit would look like.

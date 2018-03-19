@@ -37,6 +37,21 @@
     #$img_url = $base_url . "/" . $object['thumbnail_url'];
     $dt = $list_fields['dt'];
     $img_url = $base_url . "/islandora/object/" . $object['PID'] . "/datastream/$dt/view";
+
+    $cm = $object['content_models'][0];
+    if ($cm == "info:fedora/islandora:sp_large_image_cmodel") {
+       $img_url = $base_url . "/islandora/object/" . $object['PID'] . "/datastream/JPG/view.jpg";
+       $cover = "<a href=$object_url><img src=$img_url></a>";
+    } elseif ($cm == "info:fedora/islandora:sp_basic_image") {
+       $img_url = $base_url . "/islandora/object/" . $object['PID'] . "/datastream/MEDIUM_SIZE/view.jpg";
+    } elseif ($cm == "info:fedora/islandora:sp_videoCModel") {
+       $img_url = $base_url . "/islandora/object/" . $object['PID'] . "/datastream/MP4/view.mp4";
+    } elseif ($cm == "info:fedora/islandora:sp-audioCModel") {
+       $img_url = $base_url . "/islandora/object/" . $object['PID'] . "/datastream/PROXY_MP3/view.mp3";
+    } else {
+       $img_url = $base_url . "/islandora/object/" . $object['PID'] . "/datastream/TN/view.jpg";
+    }
+
     if (is_array(@$object['solr_doc'][$list_fields['headline']])) {
       $headline = @$object['solr_doc'][$list_fields['headline']][0];
     } else {
@@ -95,3 +110,28 @@
           window.timeline = new TL.Timeline('timeline-embed', timeline_json);
       </script>
 
+<style>
+.tl-media {
+  z-index: 999!important;
+  display: table-cell;
+}
+
+.tl-media video {
+  max-height: 100%!important;
+}
+
+.tl-slide-scrollable-container {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.tl-media audio {
+  max-height: 100%!important;
+}
+
+.tl-text {
+  float: left;
+  width: 100%!important;
+}
+
+</style>

@@ -195,7 +195,6 @@ function islandora_exhibits_browse_admin_settings_configure($form, &$form_state)
     $description = isset($fields_data[$key]['configuration']['timeline']['description']) ? $fields_data[$key]['configuration']['timeline']['description'] : 'dc.description';
     $start_date = isset($fields_data[$key]['configuration']['timeline']['start_date']) ? $fields_data[$key]['configuration']['timeline']['start_date'] : 'dc.date';
     $end_date = isset($fields_data[$key]['configuration']['timeline']['end_date']) ? $fields_data[$key]['configuration']['timeline']['end_date'] : '';
-    $dt = isset($fields_data[$key]['configuration']['timeline']['dt']) ? $fields_data[$key]['configuration']['timeline']['dt'] : 'TN';
     $height = isset($fields_data[$key]['configuration']['timeline']['height']) ? $fields_data[$key]['configuration']['timeline']['height'] : '600px';
 
   
@@ -223,12 +222,6 @@ function islandora_exhibits_browse_admin_settings_configure($form, &$form_state)
       '#description' => t('(optional)'),
       '#default_value' => $end_date,
     );
-    $form['dt'] = array(
-      '#type' => 'textfield',
-      '#title' => t('Datastream'),
-      '#description' => t('Which datastream to use for displaying images. For example: TN, JPG, ...'),
-      '#default_value' => $dt,
-    );
     $form['height'] = array(
       '#type' => 'textfield',
       '#title' => t('Height'),
@@ -243,7 +236,6 @@ function islandora_exhibits_browse_admin_settings_configure($form, &$form_state)
 
     $headline = isset($fields_data[$key]['configuration']['slideshow']['headline']) ? $fields_data[$key]['configuration']['slideshow']['headline'] : 'dc.title';
     $description = isset($fields_data[$key]['configuration']['slideshow']['description']) ? $fields_data[$key]['configuration']['slideshow']['description'] : 'dc.description';
-    $dt = isset($fields_data[$key]['configuration']['slideshow']['dt']) ? $fields_data[$key]['configuration']['slideshow']['dt'] : 'TN';
     $height = isset($fields_data[$key]['configuration']['slideshow']['height']) ? $fields_data[$key]['configuration']['slideshow']['height'] : '500px';
     $width = isset($fields_data[$key]['configuration']['slideshow']['width']) ? $fields_data[$key]['configuration']['slideshow']['width'] : '100%';
 
@@ -258,12 +250,6 @@ function islandora_exhibits_browse_admin_settings_configure($form, &$form_state)
       '#title' => t('Description Field'),
       '#description' => t('What field to use for description of object'),
       '#default_value' => $description,
-    );
-    $form['dt'] = array(
-      '#type' => 'textfield',
-      '#title' => t('Datastream'),
-      '#description' => t('Which datastream to use for displaying images.  For example: TN, JPG, ...'),
-      '#default_value' => $dt,
     );
     $form['height'] = array(
       '#type' => 'textfield',
@@ -314,7 +300,6 @@ function islandora_exhibits_browse_admin_settings_configure_submit($form, &$form
     $fields_data[$key]['configuration']['timeline']['description'] = $form_state['values']['description'];
     $fields_data[$key]['configuration']['timeline']['start_date'] = $form_state['values']['start_date'];
     $fields_data[$key]['configuration']['timeline']['end_date'] = $form_state['values']['end_date'];
-    $fields_data[$key]['configuration']['timeline']['dt'] = $form_state['values']['dt'];
     $fields_data[$key]['configuration']['timeline']['height'] = $form_state['values']['height'];
    
     unset($fields_data[$key]['configuration']['slideshow']);
@@ -326,7 +311,6 @@ function islandora_exhibits_browse_admin_settings_configure_submit($form, &$form
 
     $fields_data[$key]['configuration']['slideshow']['headline'] = $form_state['values']['headline'];
     $fields_data[$key]['configuration']['slideshow']['description'] = $form_state['values']['description'];
-    $fields_data[$key]['configuration']['slideshow']['dt'] = $form_state['values']['dt'];
     $fields_data[$key]['configuration']['slideshow']['height'] = $form_state['values']['height'];
     $fields_data[$key]['configuration']['slideshow']['width'] = $form_state['values']['width'];
 
