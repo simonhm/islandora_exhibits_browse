@@ -26,12 +26,14 @@ For a video on how to use: https://www.youtube.com/edit?video_referrer=watch&vid
 
 To configure, go to Home --> Administration --> Islandora --> Islandora Utility Modules --> Exhibits Browse. 
 
-Login as repository manager/administrator.  First navigate to the collection that will become an exhibit.  Click on Manage.  Click on Datastreams.
-Next copy the "Collection PID".  For example: DEMOrepository:exhibit_demo (above "MIME TYPE" column).  
+Login as repository manager/administrator.  
 
-Next navitage to Exhibits Browse (Home --> Administration --> Islandora --> Islandora Utility Modules --> Exhibits Browse).
+First you need a collection PID: Navigate to the collection that will become an exhibit.  Click on Manage.  Click on Datastreams.
+Next copy the "Collection PID".  For example: DEMOrepository:exhibit_demo (above "MIME TYPE" column). 
 
-In "Exhibits pages", in first column, copy the "Collection PID".  
+Next navitage to Exhibits Browse configuration (Home --> Administration --> Islandora --> Islandora Utility Modules --> Exhibits Browse).
+
+In "Exhibits pages", in first column, paste the "Collection PID".  
 
 In second column, choose the Type of exhibit (timeline or slideshow).
 
@@ -48,10 +50,6 @@ Other metadata elements can be used for the headline and description (Dublin Cor
 Click Save.  
 
 Next, click on "View Page" to see what the exhibit would look like.
-
-## Notes
-
-* ...
 
 ### Theming
 
