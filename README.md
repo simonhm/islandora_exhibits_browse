@@ -55,7 +55,7 @@ Next, click on "View Page" to see what the exhibit would look like.
 
 The pages are located at ..../exhibits/{your-path} 
 
-![Configuration](http://iprotion.com/sites/default/files/2018-03/timeline.JPG)
+![Configuration](http://iprotion.com/sites/default/files/2018-03/tl.JPG)
 
 ### Blocks (for Drupal advanced users)
 
