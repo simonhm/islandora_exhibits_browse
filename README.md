@@ -20,6 +20,7 @@ Install as usual, see [this](https://drupal.org/documentation/install/modules-th
 
 ## Configuration
 
+For detailed documentation go to: https://islandora.mnpals.net/pals/islandora/object/PALSrepository%3A429
 
 To configure, go to Home --> Administration --> Islandora --> Islandora Utility Modules --> Exhibits Browse. 
 
