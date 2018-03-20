@@ -51,6 +51,14 @@ Click Save.
 
 Next, click on "View Page" to see what the exhibit would look like.
 
+### Blocks (for advanced Drupal users)
+
+This module also creates blocks displaying those exhibits content as well. After finishing to create the exhibits pages, navigate to .../admin/structure/block, there are some blocks named as: Exhibit Browse - yourpath ... So you have more control to decide where you want these exhibits content to be displayed. For example, you can put a slideshow/timeline block on homepage, etc...
+
+### Notes
+
+The module can display video, audio on timeline and slideshow. For other solution pack content, it will use JPG or TN datastream to display them on timeline/slideshow.
+
 ### Theming
 
 There are template files for the exhibit pages. 
