@@ -20,10 +20,6 @@ Install as usual, see [this](https://drupal.org/documentation/install/modules-th
 
 ## Configuration
 
-For a short video on setting up an exhibit, see: https://islandora.mnpals.net/pals/islandora/object/PALSrepository%3A426. 
-
-For detailed documentation, see: https://islandora.mnpals.net/pals/islandora/object/PALSrepository%3A427
-
 
 To configure, go to Home --> Administration --> Islandora --> Islandora Utility Modules --> Exhibits Browse. 
 
@@ -41,6 +37,8 @@ In the third column, type in a custom path name.  For example, athletics_slidesh
 Under Operations, click on Configure. 
 
 Under Pagename, name the exhibit.  
+
+The module can display any format - photographs, audio, video, etc. 
 
 Other metadata elements can be used for the headline and description (Dublin Core or MODs).
 
