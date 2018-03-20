@@ -65,12 +65,6 @@ This module also creates blocks displaying those exhibits content as well. After
 
 This module can display video, audio on timeline/slideshow. For other solution pack content, JPG or TN datastream will be used to display.
 
-### Theming
-
-There are template files for the exhibit pages. 
-
-Template files can be overridden by a theme by copying the template file from the modules folder into the theme folder. You can override a theme per defined facet page by appending the path value to the template file. If you do, make sure to copy the original template file to your theme as well.
-
 ## Maintainers/Sponsors
 
 Current maintainers:
