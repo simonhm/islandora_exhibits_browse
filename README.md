@@ -53,9 +53,12 @@ Next, click on "View Page" to see what the exhibit would look like.
 
 The pages are located at ..../exhibits/{your-path} 
 
+![Configuration](http://iprotion.com/sites/default/files/2018-03/exhibits.jpg)
+
 ### Blocks (for Drupal advanced users)
 
 This module also creates blocks displaying those exhibits content as well. After finishing to create the exhibits pages, navigate to .../admin/structure/block, there are some blocks named as: Exhibit Browse - yourpath ... So you have more control to decide where you want these exhibits content to be displayed. For example, you can put a slideshow/timeline block on homepage, etc...
+![Blocks](http://iprotion.com/sites/default/files/2018-03/blocks_0.jpg)
 
 ### Notes
 
