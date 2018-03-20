@@ -33,6 +33,8 @@ Next copy the "Collection PID".  For example: DEMOrepository:exhibit_demo (above
 
 Next navitage to Exhibits Browse configuration (Home --> Administration --> Islandora --> Islandora Utility Modules --> Exhibits Browse).
 
+![Configuration](http://iprotion.com/sites/default/files/2018-03/exhibits.jpg)
+
 In "Exhibits pages", in first column, paste the "Collection PID".  
 
 In second column, choose the Type of exhibit (timeline or slideshow).
@@ -53,7 +55,7 @@ Next, click on "View Page" to see what the exhibit would look like.
 
 The pages are located at ..../exhibits/{your-path} 
 
-![Configuration](http://iprotion.com/sites/default/files/2018-03/exhibits.jpg)
+![Configuration](http://iprotion.com/sites/default/files/2018-03/timeline.JPG)
 
 ### Blocks (for Drupal advanced users)
 
