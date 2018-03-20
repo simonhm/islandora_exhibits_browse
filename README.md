@@ -22,6 +22,8 @@ Install as usual, see [this](https://drupal.org/documentation/install/modules-th
 
 For detailed documentation go to: https://islandora.mnpals.net/pals/islandora/object/PALSrepository%3A429
 
+For a video on how to use: https://www.youtube.com/edit?video_referrer=watch&video_id=kXzbCtD7XO4 
+
 To configure, go to Home --> Administration --> Islandora --> Islandora Utility Modules --> Exhibits Browse. 
 
 Login as repository manager/administrator.  First navigate to the collection that will become an exhibit.  Click on Manage.  Click on Datastreams.
