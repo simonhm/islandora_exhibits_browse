@@ -37,7 +37,7 @@ In "Exhibits pages", in first column, paste the "Collection PID".
 
 In second column, choose the Type of exhibit (timeline or slideshow).
 
-In the third column, type in a custom path name.  For example, athletics_slideshow.  Click Save.
+In the third column, type in your custom path name.  For example, athletics_slideshow.  Click Save.
 
 Under Operations, click on Configure. 
 
@@ -50,6 +50,8 @@ Other metadata elements can be used for the headline and description (Dublin Cor
 Click Save.  
 
 Next, click on "View Page" to see what the exhibit would look like.
+
+The pages are located at ..../exhibits/{your-path} 
 
 ### Blocks (for Drupal advanced users)
 
