@@ -57,7 +57,7 @@ This module also creates blocks displaying those exhibits content as well. After
 
 ### Notes
 
-The module can display video, audio on timeline and slideshow. For other solution pack content, it will use JPG or TN datastream to display them on timeline/slideshow.
+This module can display video, audio on timeline/slideshow. For other solution pack content, JPG or TN datastream will be used to display.
 
 ### Theming
 
