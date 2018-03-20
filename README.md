@@ -59,7 +59,7 @@ The pages are located at ..../exhibits/{your-path}
 
 ### Blocks (for Drupal advanced users)
 
-This module also creates blocks displaying those exhibits content as well. After finishing to create the exhibits pages, navigate to .../admin/structure/block, there are some blocks named as: Exhibit Browse - {your path} ... So you have more control to decide where you want these exhibits content to be displayed. For example, you can put a slideshow/timeline block on homepage, etc...
+This module also creates blocks displaying those exhibits content as well. After finishing to create the exhibits pages, navigate to .../admin/structure/block, there are some blocks named as: Exhibit Browse - {your path} ... So you have more control to decide where you want these exhibits content to be displayed. For example, you can assign a slideshow/timeline block into main content region on homepage, etc...
 
 ![Blocks](http://iprotion.com/sites/default/files/2018-03/blocks_0.jpg)
 
