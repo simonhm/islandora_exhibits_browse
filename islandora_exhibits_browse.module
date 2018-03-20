@@ -161,8 +161,7 @@ function islandora_exhibits_browse_theme() {
  * Page callback function.
  *
  * @param string $path
- *   Machine readable name passed in the url to decide what solr field to facet
- *   on.
+ *
  */
 function islandora_exhibits_browse_callback($path) {
   // Get available fields from variable.
@@ -271,8 +270,6 @@ function islandora_exhibits_browse_callback($path) {
  * Access callback function.
  *
  * @param string $path
- *   Machine readable name passed in the url to decide what solr field to facet
- *   on.
  *
  * @return bool
  *   A boolean based on user access and valid path.
