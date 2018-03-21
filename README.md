@@ -70,6 +70,7 @@ This module can display video, audio on timeline/slideshow. For other solution p
 ### TO DO
 
 * Add a Drupal permission to "Configure Islandora Exhibits Browse".
+* Add some ID attributes used to point to a style in a customized CSS, or by JavaScript if needed
 * Add map browse type.
 * Code refactoring: Check typo and clean the code.
 
