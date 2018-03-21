@@ -67,6 +67,12 @@ This module also creates blocks displaying those exhibits content as well. After
 
 This module can display video, audio on timeline/slideshow. For other solution pack content, JPG or TN datastream will be used to display.
 
+### TODO
+
+* Add a Drupal permission to "Configure Islandora Exhibits Browse".
+* Add map browse type
+* Code refactoring: Check typo and clean the code.
+
 ## Maintainers/Sponsors
 
 Current maintainers:
