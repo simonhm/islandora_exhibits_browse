@@ -26,7 +26,7 @@
               . $base_url . "/islandora/object/" . $object['PID'] . "/datastream/PROXY_MP3/view" . '" type="audio/mp3"><p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that<a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p></video>';      
     } else {
        $img_url = $base_url . "/islandora/object/" . $object['PID'] . "/datastream/TN/view";
-       $cover_media = "<a href=$object_url><img src=$img_url></a>";
+       $cover = "<a href=$object_url><img src=$img_url></a>";
     }
     
     if (is_array(@$object['solr_doc'][$list_fields['headline']])) {
