@@ -12,7 +12,7 @@ function islandora_exhibit_browse_init() {
 
 function islandora_exhibits_browse_help($path, $arg) {
   if ($path == 'admin/help#islandora_exhibits_browse') {
-    return t('Islandora Exhibit Browsers module - developed by <a href=http://www.mnpals.org>PALS</a>');
+    return t('Islandora Exhibit Browser module - developed by <a href=http://www.mnpals.org>PALS</a>');
   }
 }
 
