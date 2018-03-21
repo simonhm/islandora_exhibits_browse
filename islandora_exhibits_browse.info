@@ -1,5 +1,5 @@
 name = Islandora Exhibits Browse 
-description = Creates pages displaying exhibits collection: timeline, slideshow, map browse
+description = Creates pages and blocks displaying exhibits collection: timeline, slideshow, map browse
 dependencies[] = islandora_solr
 configure = admin/islandora/tools/exhibits_browse
 package = Islandora Exhibits Browses
