@@ -16,7 +16,8 @@ function islandora_exhibits_browse_admin_settings($form, &$form_state) {
 
   // Fields.
   global $base_url;   // Will point to http://www.example.com
-  $link = $base_url . '/exhibits/yourpath';
+  $page_prefix = variable_get('islandora_exhibits_browse_page_prefix', 'exhibits');
+  $link = $base_url . '/' . $page_prefix . '/yourpath';
   $form['exhibits_pages']['islandora_exhibits_browse_fields_data'] = array(
     '#type' => 'item',
     '#title' => t('Exhibits pages'),
@@ -60,6 +61,16 @@ function islandora_exhibits_browse_admin_settings($form, &$form_state) {
   // Add fields.
   $form['exhibits_pages']['islandora_exhibits_browse_fields_data']['fields'] = $fields;
 
+  $form['page_prefix'] = array(
+     '#type' => 'textfield',
+     '#title' => t('Exhibits Page URL prefix'),
+     '#description' => t('Allows control of the path for Islandora Exhibits Browse pages ' .
+       '("exhibits" by default).  Changing this value will require you to ') . 
+       l('Clear all caches', 'admin/config/development/performance') . t(' before the change will ' .
+       'take effect'),
+     '#default_value' => $page_prefix,
+  );
+
   $form['buttons']['submit'] = array(
     '#type' => 'submit',
     '#value' => t('Save'),
@@ -79,6 +90,7 @@ function theme_islandora_exhibits_browse_admin_table(&$vars) {
   // Set variable.
   $rows = array();
   $form = $vars['form'];
+  $page_prefix = variable_get('islandora_exhibits_browse_page_prefix', 'exhibits');
 
   // Render islandora_solr_primary_display_table.
   foreach ($form['fields'] as $key => $elements) {
@@ -97,7 +109,7 @@ function theme_islandora_exhibits_browse_admin_table(&$vars) {
       if ($elements['pid']['#value']) {
         if (@$fields_data[$key]['configuration']) {
           global $base_url;   // Will point to http://www.example.com
-          $link = $base_url . '/exhibits/' . @$fields_data[$key]['path'];
+          $link = $base_url . '/' . $page_prefix . '/' . @$fields_data[$key]['path'];
           $row[] = "<a href=exhibits_browse/edit?key=" . $key . "&new=0>Configure</a> | <a href=exhibits_browse/remove?key=" . $key . "&new=0>Remove</a> | <a target=_blank href=" . $link . ">View Page</a>";
         } else {
           $row[] = "<a href=exhibits_browse/edit?key=" . $key . "&new=1>Configure</a> | <a href=exhibits_browse/remove?key=" . $key . "&new=1>Remove</a>";
@@ -161,6 +173,7 @@ function islandora_exhibits_browse_admin_settings_submit($form, &$form_state) {
     $fields_data[$key]['configuration'] = @$fields_data_configure[$key]['configuration'];
   }
   variable_set('islandora_exhibits_browse_fields_data', $fields_data);
+  variable_set('islandora_exhibits_browse_page_prefix', $form_state['values']['page_prefix']);
 
   drupal_set_message(t('The configuration options have been saved.'));
 }
