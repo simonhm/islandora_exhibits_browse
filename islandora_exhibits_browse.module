@@ -94,7 +94,7 @@ function islandora_exhibits_browse_menu() {
     'file' => 'islandora_exhibits_browse.admin.inc',
     'type' => MENU_CALLBACK,
   );
-  $items['exhibits'] = array(
+  $items[variable_get('islandora_exhibits_browse_page_prefix', 'exhibits')] = array(
     'page callback' => 'islandora_exhibits_browse_callback',
     'page arguments' => array(1),
     'access callback' => 'islandora_exhibits_browse_access_callback',
