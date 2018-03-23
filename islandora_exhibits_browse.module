@@ -298,6 +298,7 @@ function islandora_exhibits_browse_build_results($solr, $pid) {
   $fl_params = "PID, dc.title, dc.description, dc.date, mods_originInfo_dateCreated_ms";
 //  $solr_build->solrParams['fl'] = array($fl_params);
   $solr_build->solrParams['fl'] = '';
+  $solr_build->solrParams['fq'] = variable_get('islandora_solr_base_filter', '');
 
   // This section resets the limits on the query and re-executes.
   $solr_build->solrStart = 0;
@@ -342,4 +343,3 @@ function islandora_exhibits_browse_pager_timeline($result_fields = array()) {
     'total' => $total,
   );
 }
-
