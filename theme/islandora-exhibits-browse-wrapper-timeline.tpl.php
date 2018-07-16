@@ -18,7 +18,6 @@
  */
 ?>
 <div class="islandora-exhibits-browse-page-wrapper">
-  <?php print $results_count; ?>
   <?php print $results; ?>
   <?php print $pager; ?>
 </div>
