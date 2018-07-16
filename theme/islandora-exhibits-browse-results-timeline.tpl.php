@@ -34,10 +34,7 @@
   foreach ($page_data as $key => $object) {
     $pid = $object['PID'];
     global $base_url;
-    #$img_url = $base_url . "/" . $object['thumbnail_url'];
-    $dt = $list_fields['dt'];
-    $img_url = $base_url . "/islandora/object/" . $object['PID'] . "/datastream/$dt/view";
-
+ 
     $cm = $object['content_models'][0];
     if ($cm == "info:fedora/islandora:sp_large_image_cmodel") {
        $img_url = $base_url . "/islandora/object/" . $object['PID'] . "/datastream/JPG/view.jpg";
