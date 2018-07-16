@@ -252,8 +252,8 @@ function islandora_exhibits_browse_callback($path) {
   // Slideshow.
   if ($type == 'Slideshow') {
 
-   // $results = $result_fields;
-    $results = array_slice($result_fields, $offset, $limit);
+    $results = $result_fields;
+    // $results = array_slice($result_fields, $offset, $limit);
 
     // Main content.
     return theme('islandora_exhibits_browse_results_slideshow', array(
